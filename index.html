@@ -1,0 +1,46 @@
+<html data-ng-app="weatherApp" manifest="cache.manifest">
+    <head>
+        <title>Weather</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+        <link href="css/bootstrap.min.css" rel="stylesheet" type="text/css"/>  
+        <link href="css/index.css" rel="stylesheet" type="text/css"/> 
+        <link href="css/angular-block-ui.min.css" rel="stylesheet" type="text/css"/> 
+         
+    </head>
+    <body>
+        <header data-ng-include="'includes/header.html'"></header>
+
+        <div data-ng-view=""></div>
+
+        <script type="text/javascript" src="js/libs/jquery-2.0.2.min.js"></script>
+        <script type="text/javascript" src="js/libs/jquery.cookie.js"></script>
+        <script type="text/javascript" src="js/libs/jquery-ui-1.10.3.min.js"></script>
+        <script type="text/javascript" src="js/libs/bootstrap/bootstrap.min.js"></script>
+
+        <script src="js/globalVaribale.js"></script>
+
+          <!-- AngularJS -->
+        <script src="js/libs/angular/angular.js"></script>
+        <script src="js/libs/angular/angular-route.js"></script>
+        <script src="js/libs/angular/angular-animate.js"></script>
+        <script src="js/libs/angular/resource.js"></script>
+        <script src="js/libs/angular/ui-bootstrap-custom-tpls-0.11.0.js"></script>
+        <script src="js/libs/angular/angular-local-storage.min.js"></script>
+        <script src="js/libs/angular-block-ui/angular-block-ui.min.js"></script>
+        
+
+        <!-- MAIN ANGULAR JS FILE -->
+        <script src="js/ng/ng.app.js"></script>
+        <script src="js/ng/ng.controllers.js"></script>
+        <script src="js/ng/controllers/homeController.js"></script>
+        <script src="js/ng/controllers/weatherAppController.js"></script>
+        <script src="js/ng/controllers/weatherOnController.js"></script>
+        <script src="js/ng/ng.directives.js"></script>
+        <script src="js/ng/directives/currentTimeDirective.js"></script>
+        <script src="js/ng/ng.service.js"></script>
+        <script src="js/ng/services/geotargetingService.js"></script>
+        <script src="js/ng/services/weatherService.js"></script>
+        <script src="js/ng/services/locationStorageService.js"></script>
+        <script src="js/ng/services/weatherStorageService.js"></script>
+        </body>
+</html>
