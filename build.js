@@ -29101,7 +29101,7 @@ function GeotargetingAdapter() {
             };
         }
     };
-};
+}
 
 var controllers = angular.module('app.controllers', []);
 controllers.controller('HomeController', ['$scope', '$rootScope', '$location', 'weatherService', 'geotargetingService', 'weatherStorageService', 'locationStorageService',

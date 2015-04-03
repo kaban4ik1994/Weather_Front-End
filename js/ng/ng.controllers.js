@@ -123,6 +123,6 @@ function GeotargetingAdapter() {
             };
         }
     };
-};
+}
 
 var controllers = angular.module('app.controllers', []);
