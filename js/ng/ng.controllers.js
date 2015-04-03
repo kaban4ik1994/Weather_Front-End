@@ -98,7 +98,7 @@ function WeatherAdapter() {
             };
         }
     };
-};
+}
 function AdvancedGeotargeting() {
     this.getLocationFromResponse = function (value) {
         var location;
@@ -109,7 +109,7 @@ function AdvancedGeotargeting() {
         });
         return location;
     };
-};
+}
 
 function GeotargetingAdapter() {
 

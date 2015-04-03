@@ -1,6 +1,6 @@
 controllers.controller('WeatherAppController', [
-            function ($scope, $rootScope, $location) {
+    function ($scope, $rootScope, $location) {
 
 
-            }
-        ]);
+    }
+]);
