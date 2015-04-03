@@ -19,4 +19,4 @@ services.factory('weatherStorageService', [
     		    weatherStorageService.getWeatherData = _getWeatherData;
     		    weatherStorageService.clearWeatherStorage = _clearWeatherStorage;
     		    return weatherStorageService;
-    }])
+    }]);
