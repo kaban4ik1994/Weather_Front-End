@@ -40,14 +40,14 @@ module.exports = function (grunt) {
                     'js/libs/angular/angular-local-storage.min.js',
                     'js/libs/angular-block-ui/angular-block-ui.min.js',
                     'js/ng/ng.app.js',
+                    'js/ng/ng.directives.js',
+                    'js/ng/directives/currentTimeDirective.js',
                     'js/ng/ng.controllers.js',
                     'js/ng/controllers/homeController.js',
                     'js/ng/controllers/weatherAppController.js',
                     'js/ng/controllers/weatherOnController.js',
-                    'js/ng/ng.directives.js',
-                    'js/ng/directives/currentTimeDirective.js',
-                    'js/ng/services/geotargetingService.js',
                     'js/ng/ng.service.js',
+                    'js/ng/services/geotargetingService.js',
                     'js/ng/services/locationStorageService.js',
                     'js/ng/services/weatherService.js',
                     'js/ng/services/weatherStorageService.js'
@@ -56,6 +56,10 @@ module.exports = function (grunt) {
             }
         },
         uglify: {
+            options: {
+                mangle: false
+            },
+
             build: {
                 src: 'build.js',
                 dest: 'build.min.js'
@@ -90,7 +94,7 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-contrib-uglify');
     grunt.loadNpmTasks('grunt-contrib-cssmin');
     grunt.loadNpmTasks('grunt-contrib-watch');
-    grunt.loadNpmTasks('grunt-remove-logging');
+ //   grunt.loadNpmTasks('grunt-remove-logging');
 
-    grunt.registerTask('default', ['jshint', 'concat', 'uglify', 'cssmin', 'removelogging', 'watch']);
+    grunt.registerTask('default', ['jshint', 'concat', 'uglify', 'cssmin', 'watch']);
 };
