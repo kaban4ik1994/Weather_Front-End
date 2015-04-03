@@ -28982,21 +28982,21 @@ var directives = angular.module('app.main', []);
 
 
 directives.directive('currentTime', ['$interval', 'dateFilter',
-	 function($interval, dateFilter) {
-	
-	 return {
-	 scope: {
-	 	format: '=format'
-	 },
-	 link: function(scope, element, attrs) {
-          function updateTime() {
-            element.text(dateFilter(new Date(), scope.format));
-          }
+    function ($interval, dateFilter) {
 
-          $interval(updateTime, 100);
-        }
-    }
-	}])
+        return {
+            scope: {
+                format: '=format'
+            },
+            link: function (scope, element, attrs) {
+                function updateTime() {
+                    element.text(dateFilter(new Date(), scope.format));
+                }
+
+                $interval(updateTime, 100);
+            }
+        };
+    }]);
 function AdvancedWeather() {
 
     this.roundValue = function (value) {
@@ -29097,7 +29097,7 @@ function WeatherAdapter() {
             };
         }
     };
-};
+}
 function AdvancedGeotargeting() {
     this.getLocationFromResponse = function (value) {
         var location;
@@ -29108,7 +29108,7 @@ function AdvancedGeotargeting() {
         });
         return location;
     };
-};
+}
 
 function GeotargetingAdapter() {
 
@@ -29122,125 +29122,125 @@ function GeotargetingAdapter() {
             };
         }
     };
-};
+}
 
 var controllers = angular.module('app.controllers', []);
 controllers.controller('HomeController', ['$scope', '$rootScope', '$location', 'weatherService', 'geotargetingService', 'weatherStorageService', 'locationStorageService',
-            function ($scope, $rootScope, $location, weatherService, geotargetingService, weatherStorageService, locationStorageService) {
+    function ($scope, $rootScope, $location, weatherService, geotargetingService, weatherStorageService, locationStorageService) {
 
+        var weatherAdapter = new WeatherAdapter();
+        var geotargetingAdapter = new GeotargetingAdapter();
+
+        $scope.timeIsNow = Date.now();
+
+        function successGetPosition(pos) {
+
+            var requestParametersToWeatherApi = {
+                longitude: pos.coords.longitude,
+                latitude: pos.coords.latitude
+            };
+
+            weatherService.get(requestParametersToWeatherApi, function (response) {
+                $scope.weatherData = weatherAdapter.request(response);
+                weatherStorageService.clearWeatherStorage();
+                weatherStorageService.saveWeatherData($scope.weatherData);
+            }, function (error) {
+                $scope.weatherData = weatherStorageService.getWeatherData();
+            });
+
+            var requestParametersToGeotargetingApi = {
+                latitude: pos.coords.latitude,
+                longitude: pos.coords.longitude
+            };
+
+            geotargetingService.get(requestParametersToGeotargetingApi, function (response) {
+                $scope.locationData = geotargetingAdapter.request(response);
+                locationStorageService.clearLocationStorage();
+                locationStorageService.saveLocationData($scope.locationData);
+            }, function (error) {
+                $scope.locationData = locationStorageService.getLocationData();
+            });
+        }
+
+        function errorGetPosition(err) {
+            $scope.locationData = locationStorageService.getLocationData();
+            $scope.weatherData = weatherStorageService.getWeatherData();
+            console.warn('ERROR(' + err.code + '): ' + err.message);
+        }
+
+        if (window.navigator.onLine) {
+            navigator.geolocation.getCurrentPosition(successGetPosition, errorGetPosition);
+        }
+        else {
+            $scope.weatherData = weatherStorageService.getWeatherData();
+            $scope.locationData = locationStorageService.getLocationData();
+        }
+    }
+]);
+controllers.controller('WeatherAppController', [
+    function ($scope, $rootScope, $location) {
+
+
+    }
+]);
+controllers.controller('WeatherOnController', ['$scope', '$rootScope', '$location', 'weatherService',
+    'geotargetingService',
+    function ($scope, $rootScope, $location, weatherService, geotargetingService) {
+
+        $scope.getWeatherOn = function (date)
+        {
+            if (date === undefined)
+            {
+                alert("Input date");
+            }
+            else
+            {
+                $scope.isClicked = true;
                 var weatherAdapter = new WeatherAdapter();
                 var geotargetingAdapter = new GeotargetingAdapter();
-
-                $scope.timeIsNow = Date.now();
-
-                function successGetPosition(pos) {
-
+                function successGetPosition(pos)
+                {
                     var requestParametersToWeatherApi = {
-                            longitude: pos.coords.longitude,
-                            latitude: pos.coords.latitude,
+                        latitude: pos.coords.latitude,
+                        longitude: pos.coords.longitude,
+                        date: $scope.weatherDate
                     };
 
                     weatherService.get(requestParametersToWeatherApi, function (response) {
                         $scope.weatherData = weatherAdapter.request(response);
-                        weatherStorageService.clearWeatherStorage();
-                        weatherStorageService.saveWeatherData($scope.weatherData);
                     }, function (error) {
-                        $scope.weatherData = weatherStorageService.getWeatherData();
                     });
 
                     var requestParametersToGeotargetingApi = {
-                            latitude: pos.coords.latitude,
-                            longitude: pos.coords.longitude,
+                        latitude: pos.coords.latitude,
+                        longitude: pos.coords.longitude
                     };
 
                     geotargetingService.get(requestParametersToGeotargetingApi, function (response) {
-                        $scope.locationData = geotargetingAdapter.request(response)
-                        locationStorageService.clearLocationStorage();
-                        locationStorageService.saveLocationData($scope.locationData);
+                        $scope.locationData = geotargetingAdapter.request(response);
                     }, function (error) {
-                        $scope.locationData = locationStorageService.getLocationData();
                     });
                 }
 
-                function errorGetPosition(err) {
-                    $scope.locationData = locationStorageService.getLocationData();
-                    $scope.weatherData = weatherStorageService.getWeatherData();
+                function errorGetPosition(err)
+                {
                     console.warn('ERROR(' + err.code + '): ' + err.message);
-                };
-                
-                if (window.navigator.onLine) {
+                }
+
+                if (window.navigator.onLine)
+                {
                     navigator.geolocation.getCurrentPosition(successGetPosition, errorGetPosition);
                 }
-                else {
-                    $scope.weatherData = weatherStorageService.getWeatherData();
-                    $scope.locationData = locationStorageService.getLocationData();
+                else
+                {
+                    //TO DO if offline??
+                    //  $scope.weatherData = weatherStorageService.getWeatherData();
+                    //  $scope.locationData = locationStorageService.getLocationData();
                 }
             }
-        ]);
-controllers.controller('WeatherAppController', [
-            function ($scope, $rootScope, $location) {
-
-
-            }
-        ]);
-controllers.controller('WeatherOnController', ['$scope', '$rootScope', '$location', 'weatherService',
-         'geotargetingService',
-            function ($scope, $rootScope, $location, weatherService, geotargetingService) {
-
-                $scope.getWeatherOn = function (date)
-                {
-                    if (date === undefined)
-                    {
-                        alert("Input date");
-                    }
-                    else
-                    {
-                        $scope.isClicked = true;
-                        var weatherAdapter = new WeatherAdapter();
-                        var geotargetingAdapter = new GeotargetingAdapter();
-                        function successGetPosition(pos)
-                        {
-                            var requestParametersToWeatherApi = {
-                                latitude: pos.coords.latitude,
-                                longitude: pos.coords.longitude,
-                                date: $scope.weatherDate,
-                            };
-
-                            weatherService.get(requestParametersToWeatherApi, function (response) {
-                                $scope.weatherData = weatherAdapter.request(response);
-                            }, function (error) {
-                            });
-
-                            var requestParametersToGeotargetingApi = {
-                                    latitude: pos.coords.latitude,
-                                    longitude: pos.coords.longitude,
-                            };
-
-                            geotargetingService.get(requestParametersToGeotargetingApi, function (response) {
-                                $scope.locationData = geotargetingAdapter.request(response)
-                            }, function (error) {
-                            });
-                        }
-
-                        function errorGetPosition(err) 
-                        {
-                            console.warn('ERROR(' + err.code + '): ' + err.message);
-                        };
-
-                        if (window.navigator.onLine) 
-                        {
-                            navigator.geolocation.getCurrentPosition(successGetPosition, errorGetPosition);
-                        }
-                        else 
-                        {
-                                //TO DO if offline??
-                          //  $scope.weatherData = weatherStorageService.getWeatherData();
-                          //  $scope.locationData = locationStorageService.getLocationData();
-                        }
-                    }
-                };
-            }
-        ]);
+        };
+    }
+]);
 'use strict';
 // Demonstrate how to register services
 // In this case it is a simple value service.
@@ -29249,36 +29249,36 @@ services.factory('geotargetingService', [
     	'$resource', function ($resource) {
     		return $resource(baseUrlApiGeotargeting, {}, {
     		});
-    }])
+    }]);
 services.factory('locationStorageService', [
-    	'localStorageService', function (localStorageService) {
-                var geotargetingAdapter = new GeotargetingAdapter();
-                var locationStorageService = {};
+    'localStorageService', function (localStorageService) {
+        var geotargetingAdapter = new GeotargetingAdapter();
+        var locationStorageService = {};
 
-                var _saveLocationData = function (locationData) {
-                	localStorageService.set('locationData', locationData);
-                };
+        var _saveLocationData = function (locationData) {
+            localStorageService.set('locationData', locationData);
+        };
 
-                var _getLocationData = function () {
-                	return localStorageService.get('locationData');
-                };
+        var _getLocationData = function () {
+            return localStorageService.get('locationData');
+        };
 
-                var _clearLocationStorage = function () {
-                	 localStorageService.remove('locationData');
-                };
+        var _clearLocationStorage = function () {
+            localStorageService.remove('locationData');
+        };
 
-                locationStorageService.saveLocationData = _saveLocationData;
-                locationStorageService.getLocationData = _getLocationData;
-                locationStorageService.clearLocationStorage = _clearLocationStorage; 
+        locationStorageService.saveLocationData = _saveLocationData;
+        locationStorageService.getLocationData = _getLocationData;
+        locationStorageService.clearLocationStorage = _clearLocationStorage;
 
-                return locationStorageService;
-    	}])
+        return locationStorageService;
+    }]);
 services.factory('weatherService', [
-        '$resource', function ($resource) {
-            return $resource(baseUrlApiWeather, {}, {
-            });
-        }
-    ])
+    '$resource', function ($resource) {
+        return $resource(baseUrlApiWeather, {}, {
+        });
+    }
+]);
 services.factory('weatherStorageService', [
     	'localStorageService', function (localStorageService) {
     		    var weatherAdapter = new WeatherAdapter();
@@ -29300,4 +29300,4 @@ services.factory('weatherStorageService', [
     		    weatherStorageService.getWeatherData = _getWeatherData;
     		    weatherStorageService.clearWeatherStorage = _clearWeatherStorage;
     		    return weatherStorageService;
-    }])
+    }]);
