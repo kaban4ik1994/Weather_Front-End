@@ -20,7 +20,8 @@ js/libs/angular-block-ui/angular-block-ui.min.js
 js/ng/ng.app.js
 js/ng/ng.controllers.js
 js/ng/ng.directives.js
-js/ng/ng.service.js
+style.min.css
+build.min.js
 
 NETWORK:
 views/weatherOn.html
