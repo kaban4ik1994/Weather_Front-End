@@ -32068,7 +32068,6 @@ directives.directive('passedTime', ['$interval',
     function ($interval) {
         return {
             scope: {
-                format: '=format',
                 from: '=from'
             },
             link: function (scope, element) {

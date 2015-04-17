@@ -96,7 +96,7 @@ module.exports = function (grunt) {
                 options: {
                     basePath: '../',
                     cache: ['build.min.js', 'style.min.css', 'includes/header.html', 'views/home.html'],
-                    network: ['http://*', 'https://*', 'views/weatherOn.html'],
+                    network: ['http://localhost:1337/', 'views/weatherOn.html'],
                    // fallback: ['/ views/offline.html'],
                     preferOnline: true,
                     verbose: true,
