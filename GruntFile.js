@@ -89,6 +89,30 @@ module.exports = function (grunt) {
                 src: 'build.min.js',
                 dest: 'build.clean.js'
             }
+        },
+        manifest: {
+            generate: {
+                options: {
+                    basePath: '../',
+                    cache: ['build.min.js', 'style.min.css', 'includes/header.html', 'views/home.html'],
+                    network: ['http://*', 'https://*', 'views/weatherOn.html'],
+                    fallback: ['/ views/offline.html'],
+                    preferOnline: true,
+                    verbose: true,
+                    timestamp: true,
+                    hash: true,
+                    master: ['index.html'],
+                    process: function (path) {
+                        return path.substring('build/'.length);
+                    }
+                },
+                src: [
+                  'build.min.js',
+                    'style.min.css',
+                    'index.html'
+                ],
+                dest: 'cache.manifest'
+            }
         }
     });
 
@@ -97,7 +121,8 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-contrib-uglify');
     grunt.loadNpmTasks('grunt-contrib-cssmin');
     grunt.loadNpmTasks('grunt-contrib-watch');
+    grunt.loadNpmTasks('grunt-manifest');
     //   grunt.loadNpmTasks('grunt-remove-logging');
 
-    grunt.registerTask('default', ['jshint', 'concat', 'uglify', 'cssmin', 'watch']);
+    grunt.registerTask('default', ['jshint', 'concat', 'uglify', 'cssmin', 'manifest', 'watch']);
 };
