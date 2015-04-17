@@ -1,5 +1,5 @@
 services.factory('geotargetingService', [
     	'$resource', function ($resource) {
-    		return $resource(baseUrlApiGeotargeting, {}, {
-    		});
-    }]);
+    	    return $resource(baseUrlApiGeotargeting, {}, {
+    	    });
+    	}]);

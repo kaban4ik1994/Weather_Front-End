@@ -17,7 +17,7 @@ controllers.controller('HomeController', ['$scope', '$rootScope', '$location', '
                 $scope.weatherData = weatherAdapter.request(response);
                 weatherStorageService.clearWeatherStorage();
                 weatherStorageService.saveWeatherData($scope.weatherData);
-            }, function (error) {
+            }, function () {
                 $scope.weatherData = weatherStorageService.getWeatherData();
             });
 
@@ -30,7 +30,7 @@ controllers.controller('HomeController', ['$scope', '$rootScope', '$location', '
                 $scope.locationData = geotargetingAdapter.request(response);
                 locationStorageService.clearLocationStorage();
                 locationStorageService.saveLocationData($scope.locationData);
-            }, function (error) {
+            }, function () {
                 $scope.locationData = locationStorageService.getLocationData();
             });
         }

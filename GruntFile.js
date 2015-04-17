@@ -74,12 +74,15 @@ module.exports = function (grunt) {
         watch: {
             scripts: {
                 files: ['js/**/*.js'],
-                tasks: ['jshint', 'concat', 'uglify', 'removelogging']
+                tasks: ['jshint', 'concat', 'uglify'] //, 'removelogging'
             },
             css: {
                 files: ['css/**/*.css'],
                 tasks: ['cssmin']
-            }
+            },
+            options: {
+                livereload: true
+            },
         },
         removelogging: {
             files: {
@@ -94,7 +97,7 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-contrib-uglify');
     grunt.loadNpmTasks('grunt-contrib-cssmin');
     grunt.loadNpmTasks('grunt-contrib-watch');
- //   grunt.loadNpmTasks('grunt-remove-logging');
+    //   grunt.loadNpmTasks('grunt-remove-logging');
 
     grunt.registerTask('default', ['jshint', 'concat', 'uglify', 'cssmin', 'watch']);
 };

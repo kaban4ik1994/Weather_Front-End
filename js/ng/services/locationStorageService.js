@@ -1,6 +1,5 @@
 services.factory('locationStorageService', [
     'localStorageService', function (localStorageService) {
-        var geotargetingAdapter = new GeotargetingAdapter();
         var locationStorageService = {};
 
         var _saveLocationData = function (locationData) {

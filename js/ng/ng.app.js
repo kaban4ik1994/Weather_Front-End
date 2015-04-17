@@ -8,13 +8,13 @@ var weatherApp = angular.module('weatherApp', [
     'LocalStorageModule'
 ]);
 
-weatherApp.config(function(blockUIConfig) {
+weatherApp.config(function (blockUIConfig) {
 
-  // Change the default overlay message
-  blockUIConfig.message = 'Loading...';
+    // Change the default overlay message
+    blockUIConfig.message = 'Loading...';
 
-  // Change the default delay to 100ms before the blocking is visible
-  blockUIConfig.delay = 10;
+    // Change the default delay to 100ms before the blocking is visible
+    blockUIConfig.delay = 10;
 
 });
 

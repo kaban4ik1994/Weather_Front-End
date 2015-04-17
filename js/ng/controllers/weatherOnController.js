@@ -2,19 +2,15 @@ controllers.controller('WeatherOnController', ['$scope', '$rootScope', '$locatio
     'geotargetingService',
     function ($scope, $rootScope, $location, weatherService, geotargetingService) {
 
-        $scope.getWeatherOn = function (date)
-        {
-            if (date === undefined)
-            {
+        $scope.getWeatherOn = function (date) {
+            if (date === undefined) {
                 alert("Input date");
             }
-            else
-            {
+            else {
                 $scope.isClicked = true;
                 var weatherAdapter = new WeatherAdapter();
                 var geotargetingAdapter = new GeotargetingAdapter();
-                function successGetPosition(pos)
-                {
+                function successGetPosition(pos) {
                     var requestParametersToWeatherApi = {
                         latitude: pos.coords.latitude,
                         longitude: pos.coords.longitude,
@@ -23,7 +19,7 @@ controllers.controller('WeatherOnController', ['$scope', '$rootScope', '$locatio
 
                     weatherService.get(requestParametersToWeatherApi, function (response) {
                         $scope.weatherData = weatherAdapter.request(response);
-                    }, function (error) {
+                    }, function () {
                     });
 
                     var requestParametersToGeotargetingApi = {
@@ -33,21 +29,18 @@ controllers.controller('WeatherOnController', ['$scope', '$rootScope', '$locatio
 
                     geotargetingService.get(requestParametersToGeotargetingApi, function (response) {
                         $scope.locationData = geotargetingAdapter.request(response);
-                    }, function (error) {
+                    }, function () {
                     });
                 }
 
-                function errorGetPosition(err)
-                {
+                function errorGetPosition(err) {
                     console.warn('ERROR(' + err.code + '): ' + err.message);
                 }
 
-                if (window.navigator.onLine)
-                {
+                if (window.navigator.onLine) {
                     navigator.geolocation.getCurrentPosition(successGetPosition, errorGetPosition);
                 }
-                else
-                {
+                else {
                     //TO DO if offline??
                     //  $scope.weatherData = weatherStorageService.getWeatherData();
                     //  $scope.locationData = locationStorageService.getLocationData();

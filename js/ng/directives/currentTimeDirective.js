@@ -1,11 +1,10 @@
 directives.directive('currentTime', ['$interval', 'dateFilter',
     function ($interval, dateFilter) {
-
         return {
             scope: {
                 format: '=format'
             },
-            link: function (scope, element, attrs) {
+            link: function (scope, element) {
                 function updateTime() {
                     element.text(dateFilter(new Date(), scope.format));
                 }
