@@ -1,12 +1,12 @@
-directives.directive('currentTime', ['$interval', 'dateFilter',
-    function ($interval, dateFilter) {
+directives.directive('passedTime', ['$interval',
+    function ($interval) {
         return {
             scope: {
-                format: '=format'
+                from: '=from'
             },
             link: function (scope, element) {
                 function updateTime() {
-                    element.text(dateFilter(new Date(), scope.format));
+                    element.text(moment(scope.from).fromNow());
                 }
 
                 $interval(updateTime, 100);
