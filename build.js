@@ -32081,10 +32081,51 @@ directives.directive('passedTime', ['$interval',
     }]);
 function AdvancedWeather() {
 
-    this.roundValue = function (value) {
+    function roundValue(value) {
         return Math.round(value);
-    };
-}
+    }
+
+    function convertKmphToMps(value) {
+        return Math.round(value / 3.6 * 10) / 10;
+    }
+
+    function getPartOfDay(data) {
+        return {
+            dateTemp: roundValue(data.tempC),
+            dateHumidity: data.humidity,
+            datePressure: data.pressure,
+            dateIconUrl: data.weatherIconUrl[0].value,
+            dateWindSpeed: convertKmphToMps(data.windspeedKmph),
+            dateWindGust: convertKmphToMps(data.WindGustKmph),
+            dateTime: data.time / 100
+        };
+    }
+
+    function getPartsOfDay(data) {
+        var result = [];
+        data.forEach(function (element) {
+            result.push(getPartOfDay(element));
+        });
+        return result;
+    }
+
+    function getWatherForAllDays(data) {
+        var result = [];
+        data.forEach(function (element) {
+            result.push({
+                date: element.date,
+                partsOfDay: getPartsOfDay(element.hourly)
+            });
+        });
+        return result;
+    }
+
+    this.roundValue = roundValue;
+    this.convertKmphToMps = convertKmphToMps;
+    this.getPartOfDay = getPartOfDay;
+    this.getPartsOfDay = getPartsOfDay;
+    this.getWatherForAllDays = getWatherForAllDays;
+};
 
 function WeatherAdapter() {
 
@@ -32101,81 +32142,8 @@ function WeatherAdapter() {
                 observation_time: dataRequest.data.current_condition[0].observation_time,
                 weatherDescription: dataRequest.data.current_condition[0].weatherDesc[0].value,
                 sync_time: Date.now(),
-                
-                partsOfDay: [
-                    {
-                        dateTemp: weather.roundValue(dataRequest.data.weather[0].hourly[0].tempC),
-                        dateHumidity: dataRequest.data.weather[0].hourly[0].humidity,
-                        datePressure: dataRequest.data.weather[0].hourly[0].pressure,
-                        dateIconUrl: dataRequest.data.weather[0].hourly[0].weatherIconUrl[0].value,
-                        dateWindSpeed: Math.round(dataRequest.data.weather[0].hourly[0].windspeedKmph / 3.6 * 10) / 10,
-                        dateWindGust: Math.round(dataRequest.data.weather[0].hourly[0].WindGustKmph / 3.6 * 10) / 10,
-                        dateTime: dataRequest.data.weather[0].hourly[0].time/100
-                    },
-                    {
-                        dateTemp: weather.roundValue(dataRequest.data.weather[0].hourly[1].tempC),
-                        dateHumidity: dataRequest.data.weather[0].hourly[1].humidity,
-                        datePressure: dataRequest.data.weather[0].hourly[1].pressure,
-                        dateIconUrl: dataRequest.data.weather[0].hourly[1].weatherIconUrl[0].value,
-                        dateWindSpeed: Math.round(dataRequest.data.weather[0].hourly[1].windspeedKmph / 3.6 * 10) / 10,
-                        dateWindGust: Math.round(dataRequest.data.weather[0].hourly[1].WindGustKmph / 3.6 * 10) / 10,
-                        dateTime: dataRequest.data.weather[0].hourly[1].time/100
-                    },
-                    {
-                        dateTemp: weather.roundValue(dataRequest.data.weather[0].hourly[2].tempC),
-                        dateHumidity: dataRequest.data.weather[0].hourly[2].humidity,
-                        datePressure: dataRequest.data.weather[0].hourly[2].pressure,
-                        dateIconUrl: dataRequest.data.weather[0].hourly[2].weatherIconUrl[0].value,
-                        dateWindSpeed: Math.round(dataRequest.data.weather[0].hourly[2].windspeedKmph / 3.6 * 10) / 10,
-                        dateWindGust: Math.round(dataRequest.data.weather[0].hourly[2].WindGustKmph / 3.6 * 10) / 10,
-                        dateTime: dataRequest.data.weather[0].hourly[2].time/100
-                    },
-                    {
-                        dateTemp: weather.roundValue(dataRequest.data.weather[0].hourly[3].tempC),
-                        dateHumidity: dataRequest.data.weather[0].hourly[3].humidity,
-                        datePressure: dataRequest.data.weather[0].hourly[3].pressure,
-                        dateIconUrl: dataRequest.data.weather[0].hourly[3].weatherIconUrl[0].value,
-                        dateWindSpeed: Math.round(dataRequest.data.weather[0].hourly[3].windspeedKmph / 3.6 * 10) / 10,
-                        dateWindGust: Math.round(dataRequest.data.weather[0].hourly[3].WindGustKmph / 3.6 * 10) / 10,
-                        dateTime: dataRequest.data.weather[0].hourly[3].time/100
-                    },
-                    {
-                        dateTemp: weather.roundValue(dataRequest.data.weather[0].hourly[4].tempC),
-                        dateHumidity: dataRequest.data.weather[0].hourly[4].humidity,
-                        datePressure: dataRequest.data.weather[0].hourly[4].pressure,
-                        dateIconUrl: dataRequest.data.weather[0].hourly[4].weatherIconUrl[0].value,
-                        dateWindSpeed: Math.round(dataRequest.data.weather[0].hourly[4].windspeedKmph / 3.6 * 10) / 10,
-                        dateWindGust: Math.round(dataRequest.data.weather[0].hourly[4].WindGustKmph / 3.6 * 10) / 10,
-                        dateTime: dataRequest.data.weather[0].hourly[4].time/100
-                    },
-                    {
-                        dateTemp: weather.roundValue(dataRequest.data.weather[0].hourly[5].tempC),
-                        dateHumidity: dataRequest.data.weather[0].hourly[5].humidity,
-                        datePressure: dataRequest.data.weather[0].hourly[5].pressure,
-                        dateIconUrl: dataRequest.data.weather[0].hourly[5].weatherIconUrl[0].value,
-                        dateWindSpeed: Math.round(dataRequest.data.weather[0].hourly[5].windspeedKmph / 3.6 * 10) / 10,
-                        dateWindGust: Math.round(dataRequest.data.weather[0].hourly[5].WindGustKmph / 3.6 * 10) / 10,
-                        dateTime: dataRequest.data.weather[0].hourly[5].time/100
-                    },
-                    {
-                        dateTemp: weather.roundValue(dataRequest.data.weather[0].hourly[6].tempC),
-                        dateHumidity: dataRequest.data.weather[0].hourly[6].humidity,
-                        datePressure: dataRequest.data.weather[0].hourly[6].pressure,
-                        dateIconUrl: dataRequest.data.weather[0].hourly[6].weatherIconUrl[0].value,
-                        dateWindSpeed: Math.round(dataRequest.data.weather[0].hourly[6].windspeedKmph / 3.6 * 10) / 10,
-                        dateWindGust: Math.round(dataRequest.data.weather[0].hourly[6].WindGustKmph / 3.6 * 10) / 10,
-                        dateTime: dataRequest.data.weather[0].hourly[6].time/100
-                    },
-                    {
-                        dateTemp: weather.roundValue(dataRequest.data.weather[0].hourly[7].tempC),
-                        dateHumidity: dataRequest.data.weather[0].hourly[7].humidity,
-                        datePressure: dataRequest.data.weather[0].hourly[7].pressure,
-                        dateIconUrl: dataRequest.data.weather[0].hourly[7].weatherIconUrl[0].value,
-                        dateWindSpeed: Math.round(dataRequest.data.weather[0].hourly[7].windspeedKmph / 3.6 * 10) / 10,
-                        dateWindGust: Math.round(dataRequest.data.weather[0].hourly[7].WindGustKmph / 3.6 * 10) / 10,
-                        dateTime: dataRequest.data.weather[0].hourly[7].time/100
-                    }
-                ]
+                watherForFiveDays: weather.getWatherForAllDays(dataRequest.data.weather),
+                partsOfDay: weather.getPartsOfDay(dataRequest.data.weather[0].hourly)
             };
         }
     };
@@ -32207,19 +32175,41 @@ function GeotargetingAdapter() {
 }
 
 var controllers = angular.module('app.controllers', []);
-controllers.controller('HomeController', ['$scope', '$rootScope', '$location', 'weatherService', 'geotargetingService', 'weatherStorageService', 'locationStorageService',
-    function ($scope, $rootScope, $location, weatherService, geotargetingService, weatherStorageService, locationStorageService) {
+controllers.controller('HomeController', ['$scope', '$rootScope', '$location', '$interval',
+    'weatherService', 'geotargetingService', 'weatherStorageService', 'locationStorageService',
+    function ($scope, $rootScope, $location, $interval,
+        weatherService, geotargetingService, weatherStorageService, locationStorageService) {
 
         var weatherAdapter = new WeatherAdapter();
         var geotargetingAdapter = new GeotargetingAdapter();
 
+        function updateWeather() {
+            var cacheWeather = weatherStorageService.getWeatherData();
+            var nowDate = moment().format("YYYY-MM-DD");
+            cacheWeather.watherForFiveDays.forEach(function (element) {
+                if (moment(nowDate).isSame(element.date)) {
+                    element.partsOfDay.forEach(function (value) {
+                        var currentHour = moment().hour();
+                        if (currentHour >= value.dateTime && currentHour < value.dateTime + 3) {
+                            if ($scope.weatherData) {
+                                $scope.weatherData.temp = value.dateTemp;
+                                $scope.weatherData.iconUrl = value.dateIconUrl;
+                                $scope.weatherData.pressure = value.datePressure;
+                                $scope.weatherData.humidity = value.dateHumidity;
+                            }
+                        }
+                    });
+                }
+            });
+        }
+
         $scope.timeIsNow = Date.now();
 
         function successGetPosition(pos) {
-
             var requestParametersToWeatherApi = {
                 longitude: pos.coords.longitude,
-                latitude: pos.coords.latitude
+                latitude: pos.coords.latitude,
+                numOfDays: 5
             };
 
             weatherService.get(requestParametersToWeatherApi, function (response) {
@@ -32250,13 +32240,19 @@ controllers.controller('HomeController', ['$scope', '$rootScope', '$location', '
             console.warn('ERROR(' + err.code + '): ' + err.message);
         }
 
-        if (window.navigator.onLine) {
-            navigator.geolocation.getCurrentPosition(successGetPosition, errorGetPosition);
+        function start() {
+            if (window.navigator.onLine) {
+                navigator.geolocation.getCurrentPosition(successGetPosition, errorGetPosition);
+            } else {
+                $scope.weatherData = weatherStorageService.getWeatherData();
+                $scope.locationData = locationStorageService.getLocationData();
+            }
         }
-        else {
-            $scope.weatherData = weatherStorageService.getWeatherData();
-            $scope.locationData = locationStorageService.getLocationData();
-        }
+
+        start();
+
+        $interval(start, 300 * 1000);
+        $interval(updateWeather, 30 * 1000);
     }
 ]);
 controllers.controller('WeatherAppController', [
