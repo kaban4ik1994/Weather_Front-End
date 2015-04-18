@@ -13,13 +13,11 @@ controllers.controller('HomeController', ['$scope', '$rootScope', '$location', '
                 if (moment(nowDate).isSame(element.date)) {
                     element.partsOfDay.forEach(function (value) {
                         var currentHour = moment().hour();
-                        if (currentHour >= value.dateTime && currentHour < value.dateTime + 3) {
-                            if ($scope.weatherData) {
-                                $scope.weatherData.temp = value.dateTemp;
-                                $scope.weatherData.iconUrl = value.dateIconUrl;
-                                $scope.weatherData.pressure = value.datePressure;
-                                $scope.weatherData.humidity = value.dateHumidity;
-                            }
+                        if (currentHour >= value.dateTime && currentHour < value.dateTime + 3 && $scope.weatherData) {
+                            $scope.weatherData.temp = value.dateTemp;
+                            $scope.weatherData.iconUrl = value.dateIconUrl;
+                            $scope.weatherData.pressure = value.datePressure;
+                            $scope.weatherData.humidity = value.dateHumidity;
                         }
                     });
                 }
